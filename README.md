@@ -1,5 +1,4 @@
-# hip_render
-Houdini hip render pipeline tool
+# Houdini hip render pipeline tool(Windows, Linux)
 
 1. Select Hip File
 2. Input Start Frame and End Frame
