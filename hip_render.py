@@ -6,7 +6,8 @@ from Tkinter import *
 from tkFileDialog import askopenfilename
 from threading import Thread
 
-errorMessages = {0:"No Error", 1:"Invalid start frame", 2:"Invalid end frame", 6:"No HIP file selected", 7:"Invalid Step number"}
+errorMessages = {0: "No Error", 1: "Invalid start frame", 2: "Invalid end frame", 6: "No HIP file selected",
+                 7: "Invalid Step number"}
 errorNumber = 0
 startFrame = 0
 endFrame = 0
@@ -27,6 +28,7 @@ else:
     command_hscript = "/opt/hfs16.0.633/bin/hscript "
     defaultDir = "/home"
 
+
 def App():
     def onUnexpectedClosing():
         root.destroy()
@@ -34,13 +36,14 @@ def App():
     def fileWindowDialog():
         global defaultDir, startFrame, endFrame, hipFile, options
         options = []
-        hipFile = askopenfilename(initialdir=defaultDir, title="Select an HIP file to render", multiple=False, filetypes=[("hiplc", ".hiplc"), ("hipnc",".hipnc"), ("hip",".hip")])
+        hipFile = askopenfilename(initialdir=defaultDir, title="Select an HIP file to render", multiple=False,
+                                  filetypes=[("hiplc", ".hiplc"), ("hipnc", ".hipnc"), ("hip", ".hip")])
 
         print str(hipFile)
 
         if hipFile != "":
-            filePathEntry.delete(0,END)
-            filePathEntry.insert(0,hipFile)
+            filePathEntry.delete(0, END)
+            filePathEntry.insert(0, hipFile)
             defaultDir = hipFile.rpartition("/")[0]
 
             with open("render.cmd", "w") as file:
@@ -143,10 +146,11 @@ def App():
     def renderFile():
         with open("render.cmd", "w") as file:
             file.write("mread " + hipFile + "\n")
-            file.write("render -V -R " + str(currentResolution) + " -f " +  str(currentStartFrame) + " " + str(currentEndFrame) + " -i " + str(currentSteps) + " " + currentMantra + "\n")
+            file.write("render -V -R " + str(currentResolution) + " -f " + str(currentStartFrame) + " " + str(
+                currentEndFrame) + " -i " + str(currentSteps) + " " + currentMantra + "\n")
             file.write("quit")
 
-        #time.sleep(5)
+        # time.sleep(5)
         os.system(command_hscript + "render.cmd")
 
         totalProgressSteps = 100
@@ -230,10 +234,14 @@ def App():
     filePathLabel = Label(root, text="HIP File", bg=bgColor, fg=textColor)
     filePathLabel.place(x=36, y=yPos)
 
-    filePathEntry = Entry(root, width = filePathEntryWidth, bg=filePathColor, fg=textColor, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2)
+    filePathEntry = Entry(root, width=filePathEntryWidth, bg=filePathColor, fg=textColor,
+                          highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2)
     filePathEntry.place(x=95, y=yPos)
 
-    filePathButton = Button(text="Browse", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor, activeforeground=textColor, width=7, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid", command=fileWindowDialog) #flat, groove, raised, ridge, solid, or sunken
+    filePathButton = Button(text="Browse", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor,
+                            activeforeground=textColor, width=7, highlightbackground=bordersColor,
+                            highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid",
+                            command=fileWindowDialog)  # flat, groove, raised, ridge, solid, or sunken
     filePathButton.place(x=480, y=yPos)
 
     yPos += yOffset
@@ -242,7 +250,9 @@ def App():
     startFrameLabel = Label(root, text="Start Frame", bg=bgColor, fg=textColor)
     startFrameLabel.place(x=8, y=yPos)
 
-    startFrameEntry = Entry(root, width = 5, bg=filePathColor, fg=textColor, disabledforeground=textColor, disabledbackground=filePathColor,highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
+    startFrameEntry = Entry(root, width=5, bg=filePathColor, fg=textColor, disabledforeground=textColor,
+                            disabledbackground=filePathColor, highlightbackground=bordersColor,
+                            highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
     startFrameEntry.place(x=95, y=yPos)
 
     yPos += yOffset
@@ -251,7 +261,9 @@ def App():
     endFrameLabel = Label(root, text="End Frame", bg=bgColor, fg=textColor)
     endFrameLabel.place(x=14, y=yPos)
 
-    endFrameEntry = Entry(root, width = 5, bg=filePathColor, fg=textColor, disabledforeground=textColor, disabledbackground=filePathColor,highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2 ,justify="center")
+    endFrameEntry = Entry(root, width=5, bg=filePathColor, fg=textColor, disabledforeground=textColor,
+                          disabledbackground=filePathColor, highlightbackground=bordersColor,
+                          highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
     endFrameEntry.place(x=95, y=yPos)
 
     yPos += yOffset
@@ -260,7 +272,9 @@ def App():
     stepsFrameLabel = Label(root, text="Steps", bg=bgColor, fg=textColor)
     stepsFrameLabel.place(x=47, y=yPos)
 
-    stepsEntry = Entry(root, width = 5, bg=filePathColor, fg=textColor, disabledforeground=textColor, disabledbackground=filePathColor,highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2 ,justify="center")
+    stepsEntry = Entry(root, width=5, bg=filePathColor, fg=textColor, disabledforeground=textColor,
+                       disabledbackground=filePathColor, highlightbackground=bordersColor,
+                       highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
     stepsEntry.place(x=95, y=yPos)
     stepsEntry.insert(0, "1")
 
@@ -274,7 +288,9 @@ def App():
     mantraName.set(options[0])
     mantraName.trace('w', optionSelect)
     mantraEntry = OptionMenu(root, mantraName, *options)
-    mantraEntry.config(width = 10, bg=filePathColor, fg=textColor, activebackground=filePathColor, activeforeground=textColor, disabledforeground=textColor, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
+    mantraEntry.config(width=10, bg=filePathColor, fg=textColor, activebackground=filePathColor,
+                       activeforeground=textColor, disabledforeground=textColor, highlightbackground=bordersColor,
+                       highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
     mantraEntry.place(x=95, y=yPos)
 
     yPos += yOffset + 10
@@ -287,7 +303,9 @@ def App():
     resolutionName.set(options_res[0])
     resolutionName.trace('w', optionResSelect)
     resolutionEntry = OptionMenu(root, resolutionName, *options_res)
-    resolutionEntry.config(width = 10, bg=filePathColor, fg=textColor, activebackground=filePathColor, activeforeground=textColor, disabledforeground=textColor, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
+    resolutionEntry.config(width=10, bg=filePathColor, fg=textColor, activebackground=filePathColor,
+                           activeforeground=textColor, disabledforeground=textColor, highlightbackground=bordersColor,
+                           highlightcolor=selectedBordersColor, highlightthickness=2, justify="center")
     resolutionEntry.place(x=95, y=yPos)
 
     yPos += yOffset + 20
@@ -300,15 +318,20 @@ def App():
     yPos += yOffset + 20
 
     ##### Render #####
-    renderButton = Button(text="Render", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor, activeforeground=textColor, height=2, width=25, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid", command=render)
+    renderButton = Button(text="Render", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor,
+                          activeforeground=textColor, height=2, width=25, highlightbackground=bordersColor,
+                          highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid", command=render)
     renderButton.place(x=renderButtonX, y=yPos)
 
     ##### Cancel #####
-    renderButton = Button(text="Cancel", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor, activeforeground=textColor, height=2, width=25, highlightbackground=bordersColor, highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid", command=cancel)
+    renderButton = Button(text="Cancel", bg=buttonsColor, fg=textColor, activebackground=selectedButtonColor,
+                          activeforeground=textColor, height=2, width=25, highlightbackground=bordersColor,
+                          highlightcolor=selectedBordersColor, highlightthickness=1, relief="solid", command=cancel)
     renderButton.place(x=renderButtonX + 200, y=yPos)
 
     root.protocol("WM_DELETE_WINDOW", onUnexpectedClosing)
     root.mainloop()
+
 
 if __name__ == "__main__":
     App()
